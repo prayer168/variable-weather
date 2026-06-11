@@ -24,8 +24,8 @@ const waterMeters = {
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const rootStyle = document.documentElement.style;
-const forecastStart = new Date(2026, 6, 20, 8, 0, 0);
-const forecastHours = 72;
+const forecastStart = new Date(2026, 6, 19, 8, 0, 0);
+const forecastHours = 96;
 let typhoonTimer = null;
 let typhoonPlaying = false;
 
@@ -107,6 +107,13 @@ const mapLabels = {
 };
 
 const typhoonRoutes = {
+  "news-reference": {
+    label: "新聞參考路徑",
+    points: [{ x: 728, y: 500 }, { x: 650, y: 452 }, { x: 574, y: 418 }, { x: 482, y: 376 }, { x: 384, y: 332 }, { x: 286, y: 298 }],
+    d: "M728 500 C668 452 620 434 574 418 C500 390 434 356 384 332 C344 316 314 304 286 298",
+    hint: "模擬氣象新聞常見的預報圖：颱風由右下方海面逐日往臺灣南方接近，影響圈也跟著擴大。",
+    hazard: 18
+  },
   "graze-north": {
     label: "擦邊北轉",
     points: [{ x: 690, y: 430 }, { x: 552, y: 332 }, { x: 426, y: 246 }, { x: 548, y: 176 }, { x: 690, y: 118 }],
@@ -193,6 +200,88 @@ function formatForecastDate(date) {
   return `${month}月${day}日 ${hour}:${minute}`;
 }
 
+function svgEl(tag, attributes = {}) {
+  const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+  return element;
+}
+
+function makeTyphoonIcon(x, y, size = 1) {
+  const icon = svgEl("g", {
+    class: "forecast-typhoon-icon",
+    transform: `translate(${x} ${y}) scale(${size})`
+  });
+  icon.append(
+    svgEl("path", {
+      class: "icon-core",
+      d: "M-3 -20 C17 -20 30 -5 27 13 C24 27 13 38 -4 42 C3 30 2 19 -6 13 C-18 5 -18 -12 -3 -20 Z"
+    }),
+    svgEl("path", {
+      class: "icon-core",
+      d: "M5 22 C-11 34 -30 24 -31 6 C-31 -9 -22 -21 -7 -25 C-11 -15 -8 -6 2 -2 C14 3 16 15 5 22 Z"
+    }),
+    svgEl("circle", { class: "icon-eye", cx: "0", cy: "0", r: "6" })
+  );
+  return icon;
+}
+
+function formatMarkerLabel(progress) {
+  const date = getForecastDate(progress);
+  return `${date.getDate()}日上午`;
+}
+
+function renderForecastMarkers(route) {
+  const markerLayer = document.querySelector("#forecastMarkers");
+  const labeledProgress = [0, 0.25, 0.5, 0.75, 1];
+  const labelOffsets = [
+    { x: 52, y: -66 },
+    { x: 56, y: -72 },
+    { x: 52, y: -80 },
+    { x: 46, y: -86 },
+    { x: 50, y: -96 }
+  ];
+  const smallProgress = [0.08, 0.15, 0.19];
+  const nodes = smallProgress.map((progress) => {
+    const point = pointOnRoute(route.points, progress);
+    return makeTyphoonIcon(point.x, point.y, 0.42);
+  });
+
+  labeledProgress.forEach((progress, index) => {
+    const point = pointOnRoute(route.points, progress);
+    const windRadius = 48 + index * 20;
+    const coreRadius = 16 + index * 5;
+    const offset = labelOffsets[index];
+    const labelWidth = 96;
+    const labelHeight = 34;
+    const labelX = Math.min(point.x + offset.x, 684);
+    const labelY = Math.max(point.y + offset.y, 22);
+    const group = svgEl("g", { class: "forecast-marker" });
+    const label = svgEl("g", { class: "forecast-label" });
+    const text = svgEl("text", { x: labelX + 16, y: labelY + 24 });
+    text.textContent = formatMarkerLabel(progress);
+    label.append(
+      svgEl("rect", { x: labelX, y: labelY, width: labelWidth, height: labelHeight, rx: 13 }),
+      text
+    );
+    group.append(
+      svgEl("circle", { class: "forecast-wind-radius", cx: point.x, cy: point.y, r: windRadius }),
+      svgEl("circle", { class: "forecast-core-radius", cx: point.x, cy: point.y, r: coreRadius }),
+      makeTyphoonIcon(point.x, point.y, 0.72 + index * 0.08),
+      svgEl("line", {
+        class: "forecast-leader",
+        x1: labelX + 18,
+        y1: labelY + labelHeight,
+        x2: point.x + 6,
+        y2: point.y - 8
+      }),
+      label
+    );
+    nodes.push(group);
+  });
+
+  markerLayer.replaceChildren(...nodes);
+}
+
 function getRouteStage(progress) {
   if (progress < 0.18) return "颱風位於臺灣東南方海面，外圍水氣逐漸接近。";
   if (progress < 0.42) return "外圍雲系接近臺灣，海面長浪與陣風開始變明顯。";
@@ -235,7 +324,7 @@ function playTyphoon({ restart = false } = {}) {
 
 function updateTyphoon() {
   const routeKey = document.querySelector("#routeInput").value;
-  const route = typhoonRoutes[routeKey] || typhoonRoutes["graze-north"];
+  const route = typhoonRoutes[routeKey] || typhoonRoutes["news-reference"];
   const distance = Number(document.querySelector("#distanceInput").value);
   const strength = Number(document.querySelector("#strengthInput").value);
   document.querySelector("#strengthOutput").value = strength;
@@ -251,13 +340,7 @@ function updateTyphoon() {
   const progressRisk = distance > 88 ? -6 : 0;
   const risk = clamp(Math.round(strength * 0.5 + proximity * 0.38 + route.hazard + progressRisk), 0, 100);
   document.querySelector("#stormTrack").setAttribute("d", route.d);
-  document.querySelector("#routePoints").replaceChildren(...route.points.map((routePoint) => {
-    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    dot.setAttribute("cx", routePoint.x);
-    dot.setAttribute("cy", routePoint.y);
-    dot.setAttribute("r", "8");
-    return dot;
-  }));
+  renderForecastMarkers(route);
   document.querySelector("#stormGraphic").setAttribute("transform", `translate(${x} ${y}) scale(${scale})`);
   rootStyle.setProperty("--stormMoistureOpacity", 0.28 + strength / 130);
   rootStyle.setProperty("--surgeOpacity", clamp((strength + proximity - 70) / 100, 0.1, 0.82));

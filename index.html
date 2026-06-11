@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>多變的天氣：水、天氣圖與颱風防災</title>
   <meta name="description" content="互動數位教材：用動畫理解水與天氣、日夜變化、天氣圖判讀、颱風與防災。">
-  <link rel="stylesheet" href="styles.css?v=20260611-forecast-playback">
+  <link rel="stylesheet" href="styles.css?v=20260611-news-track">
 </head>
 <body>
   <header class="topbar">
@@ -265,41 +265,15 @@
             <path class="taiwan-shape" d="M410 134 C456 184 474 260 450 338 C428 406 382 456 338 454 C312 400 304 334 316 268 C326 202 356 154 410 134 Z"/>
             <path class="mountain-risk" id="mountainRisk" d="M386 196 L430 326 L340 326 Z"/>
             <rect class="flood-risk" id="floodRisk" x="334" y="356" width="96" height="44" rx="12"/>
-            <path class="track" id="stormTrack" d="M690 430 C560 324 482 280 426 246 C502 198 600 164 690 118"/>
-            <g class="route-points" id="routePoints">
-              <circle cx="690" cy="430" r="8"/><circle cx="426" cy="246" r="8"/><circle cx="690" cy="118" r="8"/>
-            </g>
-            <g id="stormGraphic" class="storm" transform="translate(426 246)">
-              <ellipse class="storm-outer-haze haze-a" cx="-20" cy="10" rx="214" ry="138"/>
-              <ellipse class="storm-outer-haze haze-b" cx="42" cy="-22" rx="166" ry="110"/>
-              <ellipse class="storm-outer-haze haze-c" cx="-96" cy="76" rx="142" ry="84"/>
-              <g class="satellite-cloud-rings">
-                <path d="M-200 56 C-144 -46 -46 -130 84 -112 C172 -100 222 -40 204 30 C122 -10 42 -4 -28 38 C-86 72 -146 74 -200 56"/>
-                <path d="M-170 118 C-96 152 20 152 104 98 C154 66 176 18 158 -24 C104 28 46 54 -28 62 C-92 70 -144 92 -170 118"/>
-                <path d="M-42 -150 C46 -164 128 -124 166 -58 C102 -86 40 -82 -14 -48 C-66 -16 -126 -18 -176 -42 C-142 -102 -96 -138 -42 -150"/>
-                <path d="M-224 -8 C-162 -20 -104 -6 -58 30 C-120 18 -176 24 -230 48"/>
+            <path class="forecast-path" id="stormTrack" d="M728 500 C668 452 620 434 574 418 C500 390 434 356 384 332 C344 316 314 304 286 298"/>
+            <g class="forecast-markers" id="forecastMarkers"></g>
+            <g id="stormGraphic" class="storm typhoon-symbol" transform="translate(384 332)">
+              <g class="typhoon-symbol-spin">
+                <circle class="typhoon-symbol-halo" r="38"/>
+                <path class="typhoon-symbol-core" d="M-4 -30 C24 -30 43 -9 38 18 C35 36 20 52 -4 58 C6 42 5 28 -7 19 C-23 8 -24 -17 -4 -30 Z"/>
+                <path class="typhoon-symbol-hook" d="M6 30 C-16 45 -42 33 -43 8 C-44 -12 -31 -29 -10 -35 C-16 -20 -12 -8 2 -2 C18 5 21 21 6 30 Z"/>
+                <circle class="typhoon-symbol-eye" r="9"/>
               </g>
-              <g class="storm-cloud-shield">
-                <path class="cloud-arm arm-a" d="M-178 62 C-122 -34 -56 -102 36 -128 C116 -148 184 -100 194 -26 C104 -54 38 -32 -10 18 C-58 68 -112 82 -178 62"/>
-                <path class="cloud-arm arm-b" d="M158 104 C86 166 -28 176 -108 128 C-174 88 -190 16 -144 -52 C-96 18 -38 50 32 40 C94 32 136 58 158 104"/>
-                <path class="cloud-arm arm-c" d="M-42 -184 C42 -190 116 -154 150 -88 C86 -106 24 -90 -22 -46 C-70 -4 -128 0 -176 -28 C-150 -110 -106 -164 -42 -184"/>
-              </g>
-              <g class="spiral-rain">
-                <path class="rainband outer" d="M-176 74 C-112 -46 -2 -156 128 -112 C206 -84 224 20 154 82"/>
-                <path class="rainband middle" d="M146 110 C72 174 -54 150 -116 70 C-156 18 -122 -66 -40 -78"/>
-                <path class="rainband inner" d="M-12 -108 C70 -96 108 -42 78 22 C52 78 -38 88 -76 34"/>
-                <path class="rainband feeder" d="M-220 -18 C-160 -26 -118 -10 -82 28"/>
-              </g>
-              <g class="convective-bursts">
-                <circle cx="-92" cy="54" r="13"/><circle cx="74" cy="-86" r="16"/><circle cx="122" cy="26" r="12"/>
-                <circle cx="-32" cy="112" r="10"/><circle cx="30" cy="-128" r="9"/>
-              </g>
-              <g class="eyewall">
-                <circle r="42"/>
-                <path d="M-28 -34 C16 -60 58 -18 42 24 C24 62 -42 56 -54 8 C-60 -18 -48 -28 -28 -34 Z"/>
-              </g>
-              <circle class="eye" r="18"/>
-              <circle class="eye-clear" r="9"/>
             </g>
             <g class="warning-icons">
               <text x="330" y="382">淹水</text>
@@ -313,6 +287,7 @@
           <label class="select-row">
             <span>路徑模式</span>
             <select id="routeInput">
+              <option value="news-reference">新聞路徑：右下往臺灣南方接近</option>
               <option value="graze-north">擦邊北轉：沿東側北上再右上離開</option>
               <option value="cross-island">穿越臺灣：右下往左上通過</option>
               <option value="south-graze">南側掠過：底部輕碰臺灣</option>
@@ -585,6 +560,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=20260611-forecast-playback"></script>
+  <script src="script.js?v=20260611-news-track"></script>
 </body>
 </html>
