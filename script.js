@@ -203,7 +203,7 @@ function updateTyphoon() {
     return dot;
   }));
   document.querySelector("#stormGraphic").setAttribute("transform", `translate(${x} ${y}) scale(${scale})`);
-  rootStyle.setProperty("--stormBandOpacity", 0.35 + strength / 120);
+  rootStyle.setProperty("--stormMoistureOpacity", 0.28 + strength / 130);
   rootStyle.setProperty("--surgeOpacity", clamp((strength + proximity - 70) / 100, 0.1, 0.82));
   rootStyle.setProperty("--floodRisk", clamp((risk - 30) / 70, 0.12, 0.9));
   rootStyle.setProperty("--mountainRisk", clamp((strength + proximity - 55) / 95, 0.1, 0.88));

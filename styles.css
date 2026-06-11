@@ -257,13 +257,16 @@ meter { width: 100%; height: 18px; }
   opacity: .82;
 }
 .storm { transform-box: fill-box; transform-origin: center; }
-.storm-band { fill: rgba(45, 111, 159, .12); stroke: rgba(45, 111, 159, .34); stroke-width: 2; opacity: var(--stormBandOpacity, .8); }
 .storm-outer-haze {
-  fill: rgba(234, 246, 250, .18);
-  stroke: rgba(255, 255, 255, .34);
-  stroke-width: 10;
-  opacity: var(--stormBandOpacity, .8);
+  fill: rgba(238, 247, 250, .24);
+  stroke: none;
+  opacity: var(--stormMoistureOpacity, .72);
+  animation: moisturePulse 4.2s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
 }
+.haze-b { fill: rgba(255, 255, 255, .2); animation-delay: .5s; }
+.haze-c { fill: rgba(183, 222, 235, .22); animation-delay: .9s; }
 .storm-cloud-shield {
   animation: spinCounter 18s linear infinite;
   transform-box: fill-box;
@@ -624,6 +627,7 @@ fieldset label { display: block; margin-top: 12px; }
 @keyframes spiralRainCounter { to { stroke-dashoffset: 96; } }
 @keyframes spinCounter { to { transform: rotate(-360deg); } }
 @keyframes burstPulse { to { opacity: .45; transform: scale(.92); } }
+@keyframes moisturePulse { to { transform: scale(1.06) translate(-6px, 4px); opacity: .42; } }
 @keyframes cirrusSlide { to { transform: translateX(20px); opacity: .72; } }
 @keyframes towerGrow { to { transform: translateY(-8px) scale(1.04); } }
 @keyframes lightningBlink { 50% { opacity: .15; } }
