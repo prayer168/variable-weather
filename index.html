@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>多變的天氣：水、天氣圖與颱風防災</title>
   <meta name="description" content="互動數位教材：用動畫理解水與天氣、日夜變化、天氣圖判讀、颱風與防災。">
-  <link rel="stylesheet" href="styles.css?v=20260611-satellite-cloud">
+  <link rel="stylesheet" href="styles.css?v=20260611-forecast-playback">
 </head>
 <body>
   <header class="topbar">
@@ -251,7 +251,7 @@
       <div class="section-head">
         <p class="eyebrow">活動三</p>
         <h1 id="typhoon-title">颱風靠近時，風雨和災害風險如何變化？</h1>
-        <p>調整颱風路徑、靠近程度與強度。觀察颱風眼、眼牆、螺旋雨帶、水氣雲系、海浪、淹水與山區風險，再選擇防災行動。</p>
+        <p>選擇颱風路徑後，動畫會像氣象新聞一樣依模擬日期時間移動。觀察颱風眼、眼牆、螺旋雨帶、水氣雲系、海浪、淹水與山區風險，再選擇防災行動。</p>
       </div>
 
       <div class="typhoon-grid">
@@ -321,10 +321,21 @@
             </select>
           </label>
           <label class="slider-row">
-            <span>颱風靠近程度</span>
+            <span>預報時間軸</span>
             <input id="distanceInput" type="range" min="0" max="100" value="55">
             <output id="distanceOutput">55</output>
           </label>
+          <div class="forecast-card" aria-label="颱風動態預報">
+            <span>模擬時間</span>
+            <strong id="forecastTime">7月20日 08:00</strong>
+            <p id="forecastLead">預報起始</p>
+            <p id="forecastStage">選擇路徑後開始播放。</p>
+            <div class="forecast-actions">
+              <button class="mini-btn" type="button" id="playTyphoon">播放</button>
+              <button class="mini-btn" type="button" id="pauseTyphoon">暫停</button>
+              <button class="mini-btn" type="button" id="restartTyphoon">重播</button>
+            </div>
+          </div>
           <label class="slider-row">
             <span>颱風強度</span>
             <input id="strengthInput" type="range" min="0" max="100" value="70">
@@ -574,6 +585,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=20260611-satellite-cloud"></script>
+  <script src="script.js?v=20260611-forecast-playback"></script>
 </body>
 </html>

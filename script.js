@@ -24,6 +24,10 @@ const waterMeters = {
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const rootStyle = document.documentElement.style;
+const forecastStart = new Date(2026, 6, 20, 8, 0, 0);
+const forecastHours = 72;
+let typhoonTimer = null;
+let typhoonPlaying = false;
 
 function setView(id) {
   views.forEach((view) => view.classList.toggle("active", view.id === id));
@@ -177,15 +181,67 @@ function pointOnRoute(points, progress) {
   };
 }
 
+function getForecastDate(progress) {
+  return new Date(forecastStart.getTime() + progress * forecastHours * 60 * 60 * 1000);
+}
+
+function formatForecastDate(date) {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = String(date.getHours()).padStart(2, "0");
+  const minute = String(date.getMinutes()).padStart(2, "0");
+  return `${month}月${day}日 ${hour}:${minute}`;
+}
+
+function getRouteStage(progress) {
+  if (progress < 0.18) return "颱風位於臺灣東南方海面，外圍水氣逐漸接近。";
+  if (progress < 0.42) return "外圍雲系接近臺灣，海面長浪與陣風開始變明顯。";
+  if (progress < 0.68) return "颱風最接近臺灣，雨帶與強風影響最需要留意。";
+  if (progress < 0.88) return "颱風逐漸遠離，但背風側與山區仍可能有殘餘降雨。";
+  return "颱風離開臺灣附近海域，仍需留意長浪與後續降雨。";
+}
+
+function updateForecastReadout(progress) {
+  const date = getForecastDate(progress);
+  const leadHours = Math.round(progress * forecastHours);
+  document.querySelector("#forecastTime").textContent = formatForecastDate(date);
+  document.querySelector("#forecastLead").textContent = leadHours === 0 ? "預報起始" : `預報 +${leadHours} 小時`;
+  document.querySelector("#forecastStage").textContent = getRouteStage(progress);
+  document.querySelector("#distanceOutput").value = `+${leadHours}h`;
+}
+
+function setTyphoonPlaying(playing) {
+  typhoonPlaying = playing;
+  document.querySelector("#playTyphoon").classList.toggle("active", playing);
+  if (!playing && typhoonTimer) {
+    clearInterval(typhoonTimer);
+    typhoonTimer = null;
+  }
+}
+
+function playTyphoon({ restart = false } = {}) {
+  if (restart) document.querySelector("#distanceInput").value = 0;
+  setTyphoonPlaying(true);
+  updateTyphoon();
+  if (typhoonTimer) clearInterval(typhoonTimer);
+  typhoonTimer = setInterval(() => {
+    const input = document.querySelector("#distanceInput");
+    const next = Math.min(100, Number(input.value) + 1);
+    input.value = next;
+    updateTyphoon();
+    if (next >= 100) setTyphoonPlaying(false);
+  }, 180);
+}
+
 function updateTyphoon() {
   const routeKey = document.querySelector("#routeInput").value;
   const route = typhoonRoutes[routeKey] || typhoonRoutes["graze-north"];
   const distance = Number(document.querySelector("#distanceInput").value);
   const strength = Number(document.querySelector("#strengthInput").value);
-  document.querySelector("#distanceOutput").value = distance;
   document.querySelector("#strengthOutput").value = strength;
+  const progress = distance / 100;
 
-  const point = pointOnRoute(route.points, distance / 100);
+  const point = pointOnRoute(route.points, progress);
   const x = point.x;
   const y = point.y;
   const scale = 0.68 + strength / 160;
@@ -209,6 +265,7 @@ function updateTyphoon() {
   rootStyle.setProperty("--mountainRisk", clamp((strength + proximity - 55) / 95, 0.1, 0.88));
   rootStyle.setProperty("--warningOpacity", clamp((risk - 25) / 75, 0.25, 1));
   document.querySelector("#routeHint").textContent = `${route.label}：${route.hint}`;
+  updateForecastReadout(progress);
 
   let level = "低";
   let text = "目前直接影響較小，但仍應持續注意氣象資訊與海面長浪提醒。";
@@ -303,9 +360,18 @@ document.querySelectorAll(".answer-zone").forEach((zone) => {
 
 document.querySelector("#resetMap").addEventListener("click", resetMap);
 
-document.querySelector("#routeInput").addEventListener("change", updateTyphoon);
-document.querySelector("#distanceInput").addEventListener("input", updateTyphoon);
+document.querySelector("#routeInput").addEventListener("change", () => {
+  document.querySelector("#distanceInput").value = 0;
+  playTyphoon({ restart: true });
+});
+document.querySelector("#distanceInput").addEventListener("input", () => {
+  setTyphoonPlaying(false);
+  updateTyphoon();
+});
 document.querySelector("#strengthInput").addEventListener("input", updateTyphoon);
+document.querySelector("#playTyphoon").addEventListener("click", () => playTyphoon());
+document.querySelector("#pauseTyphoon").addEventListener("click", () => setTyphoonPlaying(false));
+document.querySelector("#restartTyphoon").addEventListener("click", () => playTyphoon({ restart: true }));
 document.querySelectorAll("#actionGrid button").forEach((button) => {
   button.addEventListener("click", () => {
     document.querySelectorAll("#actionGrid button").forEach((choice) => choice.classList.remove("correct", "wrong"));
