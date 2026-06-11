@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>多變的天氣：水、天氣圖與颱風防災</title>
   <meta name="description" content="互動數位教材：用動畫理解水與天氣、日夜變化、天氣圖判讀、颱風與防災。">
-  <link rel="stylesheet" href="styles.css?v=20260611-no-dashes">
+  <link rel="stylesheet" href="styles.css?v=20260611-satellite-cloud">
 </head>
 <body>
   <header class="topbar">
@@ -270,13 +270,19 @@
               <circle cx="690" cy="430" r="8"/><circle cx="426" cy="246" r="8"/><circle cx="690" cy="118" r="8"/>
             </g>
             <g id="stormGraphic" class="storm" transform="translate(426 246)">
-              <ellipse class="storm-outer-haze haze-a" cx="-30" cy="10" rx="190" ry="128"/>
-              <ellipse class="storm-outer-haze haze-b" cx="42" cy="-26" rx="148" ry="104"/>
-              <ellipse class="storm-outer-haze haze-c" cx="-88" cy="72" rx="118" ry="72"/>
+              <ellipse class="storm-outer-haze haze-a" cx="-20" cy="10" rx="214" ry="138"/>
+              <ellipse class="storm-outer-haze haze-b" cx="42" cy="-22" rx="166" ry="110"/>
+              <ellipse class="storm-outer-haze haze-c" cx="-96" cy="76" rx="142" ry="84"/>
+              <g class="satellite-cloud-rings">
+                <path d="M-200 56 C-144 -46 -46 -130 84 -112 C172 -100 222 -40 204 30 C122 -10 42 -4 -28 38 C-86 72 -146 74 -200 56"/>
+                <path d="M-170 118 C-96 152 20 152 104 98 C154 66 176 18 158 -24 C104 28 46 54 -28 62 C-92 70 -144 92 -170 118"/>
+                <path d="M-42 -150 C46 -164 128 -124 166 -58 C102 -86 40 -82 -14 -48 C-66 -16 -126 -18 -176 -42 C-142 -102 -96 -138 -42 -150"/>
+                <path d="M-224 -8 C-162 -20 -104 -6 -58 30 C-120 18 -176 24 -230 48"/>
+              </g>
               <g class="storm-cloud-shield">
-                <path class="cloud-arm arm-a" d="M-164 54 C-118 -28 -58 -92 28 -118 C104 -142 164 -98 176 -32 C92 -52 36 -34 -8 12 C-50 58 -96 72 -164 54"/>
-                <path class="cloud-arm arm-b" d="M142 92 C82 150 -16 166 -92 122 C-152 86 -168 18 -130 -44 C-86 20 -36 44 28 36 C82 28 122 48 142 92"/>
-                <path class="cloud-arm arm-c" d="M-38 -170 C34 -178 100 -148 132 -92 C78 -104 24 -88 -20 -48 C-62 -10 -110 -4 -154 -24 C-130 -96 -94 -148 -38 -170"/>
+                <path class="cloud-arm arm-a" d="M-178 62 C-122 -34 -56 -102 36 -128 C116 -148 184 -100 194 -26 C104 -54 38 -32 -10 18 C-58 68 -112 82 -178 62"/>
+                <path class="cloud-arm arm-b" d="M158 104 C86 166 -28 176 -108 128 C-174 88 -190 16 -144 -52 C-96 18 -38 50 32 40 C94 32 136 58 158 104"/>
+                <path class="cloud-arm arm-c" d="M-42 -184 C42 -190 116 -154 150 -88 C86 -106 24 -90 -22 -46 C-70 -4 -128 0 -176 -28 C-150 -110 -106 -164 -42 -184"/>
               </g>
               <g class="spiral-rain">
                 <path class="rainband outer" d="M-176 74 C-112 -46 -2 -156 128 -112 C206 -84 224 20 154 82"/>
@@ -568,6 +574,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=20260611-no-dashes"></script>
+  <script src="script.js?v=20260611-satellite-cloud"></script>
 </body>
 </html>

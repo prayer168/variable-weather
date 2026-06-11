@@ -249,49 +249,59 @@ meter { width: 100%; height: 18px; }
 .taiwan-shape { fill: #91bd82; stroke: #557b61; stroke-width: 5; }
 .mountain-risk { fill: rgba(185, 74, 72, .34); opacity: var(--mountainRisk, .15); }
 .flood-risk { fill: rgba(45, 111, 159, .32); opacity: var(--floodRisk, .15); }
-.track { fill: none; stroke: rgba(185, 74, 72, .5); stroke-width: 5; stroke-linecap: round; }
+.track { display: none; }
 .route-points circle {
-  fill: #fff;
-  stroke: #b94a48;
-  stroke-width: 4;
-  opacity: .82;
+  display: none;
 }
 .storm { transform-box: fill-box; transform-origin: center; }
 .storm-outer-haze {
-  fill: rgba(238, 247, 250, .24);
+  fill: rgba(246, 251, 252, .36);
   stroke: none;
   opacity: var(--stormMoistureOpacity, .72);
   animation: moisturePulse 4.2s ease-in-out infinite alternate;
   transform-box: fill-box;
   transform-origin: center;
+  filter: blur(.4px);
 }
-.haze-b { fill: rgba(255, 255, 255, .2); animation-delay: .5s; }
-.haze-c { fill: rgba(183, 222, 235, .22); animation-delay: .9s; }
+.haze-b { fill: rgba(255, 255, 255, .28); animation-delay: .5s; }
+.haze-c { fill: rgba(210, 235, 242, .28); animation-delay: .9s; }
+.satellite-cloud-rings {
+  fill: none;
+  stroke: rgba(255, 255, 255, .86);
+  stroke-width: 22;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .72;
+  filter: drop-shadow(0 5px 10px rgba(20, 52, 74, .18));
+  animation: spinCounter 24s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
 .storm-cloud-shield {
   animation: spinCounter 18s linear infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
 .cloud-arm {
-  fill: rgba(245, 250, 252, .78);
-  stroke: rgba(214, 229, 235, .92);
-  stroke-width: 5;
+  fill: rgba(250, 253, 254, .82);
+  stroke: rgba(255, 255, 255, .72);
+  stroke-width: 4;
   stroke-linejoin: round;
-  filter: drop-shadow(0 4px 9px rgba(42, 73, 91, .2));
+  filter: drop-shadow(0 5px 12px rgba(42, 73, 91, .18));
 }
-.arm-b { fill: rgba(226, 238, 244, .68); }
-.arm-c { fill: rgba(255, 255, 255, .72); }
+.arm-b { fill: rgba(238, 246, 250, .72); }
+.arm-c { fill: rgba(255, 255, 255, .76); }
 .spiral-rain path {
   fill: none;
-  stroke: rgba(45, 111, 159, .72);
-  stroke-width: 15;
+  stroke: rgba(225, 244, 250, .72);
+  stroke-width: 18;
   stroke-linecap: round;
   animation: rainbandBreathe 2.4s ease-in-out infinite alternate;
 }
 .spiral-rain .outer { stroke-width: 18; opacity: .78; }
-.spiral-rain .middle { stroke: rgba(70, 143, 179, .82); stroke-width: 14; }
-.spiral-rain .inner { stroke: rgba(33, 98, 143, .88); stroke-width: 12; }
-.spiral-rain .feeder { stroke: rgba(76, 162, 188, .65); stroke-width: 10; }
+.spiral-rain .middle { stroke: rgba(238, 250, 252, .82); stroke-width: 15; }
+.spiral-rain .inner { stroke: rgba(255, 255, 255, .9); stroke-width: 13; }
+.spiral-rain .feeder { stroke: rgba(220, 240, 246, .65); stroke-width: 11; }
 .convective-bursts {
   fill: rgba(255, 255, 255, .92);
   animation: burstPulse 1.7s ease-in-out infinite alternate;
