@@ -249,7 +249,7 @@ meter { width: 100%; height: 18px; }
 .taiwan-shape { fill: #91bd82; stroke: #557b61; stroke-width: 5; }
 .mountain-risk { fill: rgba(185, 74, 72, .34); opacity: var(--mountainRisk, .15); }
 .flood-risk { fill: rgba(45, 111, 159, .32); opacity: var(--floodRisk, .15); }
-.track { fill: none; stroke: rgba(185, 74, 72, .58); stroke-width: 5; stroke-dasharray: 12 12; animation: dashFlow 2s linear infinite; }
+.track { fill: none; stroke: rgba(185, 74, 72, .5); stroke-width: 5; stroke-linecap: round; }
 .route-points circle {
   fill: #fff;
   stroke: #b94a48;
@@ -286,13 +286,12 @@ meter { width: 100%; height: 18px; }
   stroke: rgba(45, 111, 159, .72);
   stroke-width: 15;
   stroke-linecap: round;
-  stroke-dasharray: 30 22;
-  animation: spiralRainCounter 1.1s linear infinite;
+  animation: rainbandBreathe 2.4s ease-in-out infinite alternate;
 }
 .spiral-rain .outer { stroke-width: 18; opacity: .78; }
 .spiral-rain .middle { stroke: rgba(70, 143, 179, .82); stroke-width: 14; }
 .spiral-rain .inner { stroke: rgba(33, 98, 143, .88); stroke-width: 12; }
-.spiral-rain .feeder { stroke: rgba(76, 162, 188, .65); stroke-width: 10; stroke-dasharray: 18 20; }
+.spiral-rain .feeder { stroke: rgba(76, 162, 188, .65); stroke-width: 10; }
 .convective-bursts {
   fill: rgba(255, 255, 255, .92);
   animation: burstPulse 1.7s ease-in-out infinite alternate;
@@ -628,6 +627,7 @@ fieldset label { display: block; margin-top: 12px; }
 @keyframes spinCounter { to { transform: rotate(-360deg); } }
 @keyframes burstPulse { to { opacity: .45; transform: scale(.92); } }
 @keyframes moisturePulse { to { transform: scale(1.06) translate(-6px, 4px); opacity: .42; } }
+@keyframes rainbandBreathe { to { opacity: .48; transform: rotate(-3deg) scale(1.03); } }
 @keyframes cirrusSlide { to { transform: translateX(20px); opacity: .72; } }
 @keyframes towerGrow { to { transform: translateY(-8px) scale(1.04); } }
 @keyframes lightningBlink { 50% { opacity: .15; } }
