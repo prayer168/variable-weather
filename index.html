@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>多變的天氣：水、天氣圖與颱風防災</title>
   <meta name="description" content="互動數位教材：用動畫理解水與天氣、日夜變化、天氣圖判讀、颱風與防災。">
-  <link rel="stylesheet" href="styles.css?v=20260611-typhoon-routes">
+  <link rel="stylesheet" href="styles.css?v=20260611-realistic-typhoon">
 </head>
 <body>
   <header class="topbar">
@@ -274,13 +274,28 @@
               <circle class="storm-band band-3" r="126"/>
               <circle class="storm-band band-2" r="84"/>
               <circle class="storm-band band-1" r="48"/>
-              <g class="spiral-rain">
-                <path d="M0 -118 C78 -96 114 -26 78 42 C40 112 -54 128 -104 64"/>
-                <path d="M0 -78 C46 -62 72 -18 50 28 C28 76 -34 84 -68 42"/>
-                <path d="M0 -154 C118 -126 170 -22 126 82 C82 182 -72 196 -148 92"/>
+              <circle class="storm-outer-haze" r="178"/>
+              <g class="storm-cloud-shield">
+                <path class="cloud-arm arm-a" d="M-164 54 C-118 -28 -58 -92 28 -118 C104 -142 164 -98 176 -32 C92 -52 36 -34 -8 12 C-50 58 -96 72 -164 54"/>
+                <path class="cloud-arm arm-b" d="M142 92 C82 150 -16 166 -92 122 C-152 86 -168 18 -130 -44 C-86 20 -36 44 28 36 C82 28 122 48 142 92"/>
+                <path class="cloud-arm arm-c" d="M-38 -170 C34 -178 100 -148 132 -92 C78 -104 24 -88 -20 -48 C-62 -10 -110 -4 -154 -24 C-130 -96 -94 -148 -38 -170"/>
               </g>
-              <path class="core" d="M0 -52 C54 -38 70 14 30 42 C-14 72 -74 46 -66 0 C-58 -46 -14 -42 0 -52 Z"/>
-              <circle class="eye" r="16"/>
+              <g class="spiral-rain">
+                <path class="rainband outer" d="M-176 74 C-112 -46 -2 -156 128 -112 C206 -84 224 20 154 82"/>
+                <path class="rainband middle" d="M146 110 C72 174 -54 150 -116 70 C-156 18 -122 -66 -40 -78"/>
+                <path class="rainband inner" d="M-12 -108 C70 -96 108 -42 78 22 C52 78 -38 88 -76 34"/>
+                <path class="rainband feeder" d="M-220 -18 C-160 -26 -118 -10 -82 28"/>
+              </g>
+              <g class="convective-bursts">
+                <circle cx="-92" cy="54" r="13"/><circle cx="74" cy="-86" r="16"/><circle cx="122" cy="26" r="12"/>
+                <circle cx="-32" cy="112" r="10"/><circle cx="30" cy="-128" r="9"/>
+              </g>
+              <g class="eyewall">
+                <circle r="42"/>
+                <path d="M-28 -34 C16 -60 58 -18 42 24 C24 62 -42 56 -54 8 C-60 -18 -48 -28 -28 -34 Z"/>
+              </g>
+              <circle class="eye" r="18"/>
+              <circle class="eye-clear" r="9"/>
             </g>
             <g class="warning-icons">
               <text x="330" y="382">淹水</text>
@@ -555,6 +570,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=20260611-typhoon-routes"></script>
+  <script src="script.js?v=20260611-realistic-typhoon"></script>
 </body>
 </html>
