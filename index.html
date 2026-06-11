@@ -265,8 +265,11 @@
             <path class="taiwan-shape" d="M410 134 C456 184 474 260 450 338 C428 406 382 456 338 454 C312 400 304 334 316 268 C326 202 356 154 410 134 Z"/>
             <path class="mountain-risk" id="mountainRisk" d="M386 196 L430 326 L340 326 Z"/>
             <rect class="flood-risk" id="floodRisk" x="334" y="356" width="96" height="44" rx="12"/>
-            <path class="track" d="M112 420 C216 344 296 324 374 304 C470 280 548 232 664 154"/>
-            <g id="stormGraphic" class="storm" transform="translate(374 304)">
+            <path class="track" id="stormTrack" d="M690 430 C560 324 482 280 426 246 C502 198 600 164 690 118"/>
+            <g class="route-points" id="routePoints">
+              <circle cx="690" cy="430" r="8"/><circle cx="426" cy="246" r="8"/><circle cx="690" cy="118" r="8"/>
+            </g>
+            <g id="stormGraphic" class="storm" transform="translate(426 246)">
               <circle class="storm-band band-4" r="164"/>
               <circle class="storm-band band-3" r="126"/>
               <circle class="storm-band band-2" r="84"/>
@@ -288,6 +291,16 @@
           </svg>
         </div>
         <aside class="control-panel">
+          <label class="select-row">
+            <span>路徑模式</span>
+            <select id="routeInput">
+              <option value="graze-north">擦邊北轉：沿東側北上再右上離開</option>
+              <option value="cross-island">穿越臺灣：右下往左上通過</option>
+              <option value="south-graze">南側掠過：底部輕碰臺灣</option>
+              <option value="west-track">西側北上：通過臺灣西南側</option>
+              <option value="east-offshore">東側外海：不登陸但風雨明顯</option>
+            </select>
+          </label>
           <label class="slider-row">
             <span>颱風靠近程度</span>
             <input id="distanceInput" type="range" min="0" max="100" value="55">
@@ -303,6 +316,7 @@
             <strong id="riskLevel">中等</strong>
             <p id="riskText">可能有明顯陣風與降雨，需要注意最新警報。</p>
           </div>
+          <div class="route-hint" id="routeHint" aria-live="polite">路徑說明會隨選項更新。</div>
           <div class="action-grid" id="actionGrid" aria-label="防災行動選擇">
             <button type="button" data-safe="true">固定招牌、盆栽與門窗</button>
             <button type="button" data-safe="true">準備飲水、手電筒與行動電源</button>

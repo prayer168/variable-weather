@@ -106,7 +106,7 @@ h1 { margin-bottom: 12px; font-size: clamp(2rem, 5vw, 4.2rem); line-height: 1.08
 .weather-svg, .weather-map, .typhoon-svg { display: block; width: 100%; height: auto; }
 .control-panel, .result-panel { padding: 18px; }
 
-.slider-row {
+.slider-row, .select-row {
   display: grid;
   grid-template-columns: 7em minmax(0, 1fr) 3.6em;
   align-items: center;
@@ -114,7 +114,19 @@ h1 { margin-bottom: 12px; font-size: clamp(2rem, 5vw, 4.2rem); line-height: 1.08
   margin-bottom: 18px;
   font-weight: 800;
 }
+.select-row {
+  grid-template-columns: 7em minmax(0, 1fr);
+}
 input[type="range"] { width: 100%; accent-color: var(--green); }
+select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--ink);
+  background: var(--surface);
+}
 .meter-block { display: grid; gap: 10px; margin: 12px 0 16px; }
 .meter-block div { display: grid; grid-template-columns: 7em minmax(0, 1fr); align-items: center; gap: 10px; }
 meter { width: 100%; height: 18px; }
@@ -238,6 +250,12 @@ meter { width: 100%; height: 18px; }
 .mountain-risk { fill: rgba(185, 74, 72, .34); opacity: var(--mountainRisk, .15); }
 .flood-risk { fill: rgba(45, 111, 159, .32); opacity: var(--floodRisk, .15); }
 .track { fill: none; stroke: rgba(185, 74, 72, .58); stroke-width: 5; stroke-dasharray: 12 12; animation: dashFlow 2s linear infinite; }
+.route-points circle {
+  fill: #fff;
+  stroke: #b94a48;
+  stroke-width: 4;
+  opacity: .82;
+}
 .storm { transform-box: fill-box; transform-origin: center; }
 .storm-band { fill: rgba(45, 111, 159, .12); stroke: rgba(45, 111, 159, .34); stroke-width: 2; opacity: var(--stormBandOpacity, .8); }
 .spiral-rain path {
@@ -246,12 +264,12 @@ meter { width: 100%; height: 18px; }
   stroke-width: 13;
   stroke-linecap: round;
   stroke-dasharray: 28 20;
-  animation: spiralRain 1.1s linear infinite;
+  animation: spiralRainCounter 1.1s linear infinite;
 }
 .storm .core {
   fill: #2d6f9f;
   opacity: .9;
-  animation: spin 5.6s linear infinite;
+  animation: spinCounter 5.6s linear infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -261,6 +279,15 @@ meter { width: 100%; height: 18px; }
 .risk-card span, .risk-card strong { display: block; }
 .risk-card strong { margin: 4px 0; font-size: 1.7rem; }
 .risk-card p { margin-bottom: 0; }
+.route-hint {
+  margin: -4px 0 14px;
+  padding: 12px;
+  border: 1px solid #cfe1da;
+  border-radius: 8px;
+  color: #31554b;
+  background: var(--surface-soft);
+  font-weight: 800;
+}
 .action-grid { display: grid; gap: 10px; margin-bottom: 14px; }
 .action-grid button { padding: 10px; text-align: left; }
 .action-grid button.correct { border-color: var(--green); background: #e4f5eb; }
@@ -552,6 +579,8 @@ fieldset label { display: block; margin-top: 12px; }
 @keyframes surgeMove { to { transform: translateY(-18px); } }
 @keyframes spiralRain { to { stroke-dashoffset: -96; } }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spiralRainCounter { to { stroke-dashoffset: 96; } }
+@keyframes spinCounter { to { transform: rotate(-360deg); } }
 @keyframes cirrusSlide { to { transform: translateX(20px); opacity: .72; } }
 @keyframes towerGrow { to { transform: translateY(-8px) scale(1.04); } }
 @keyframes lightningBlink { 50% { opacity: .15; } }
@@ -592,6 +621,6 @@ fieldset label { display: block; margin-top: 12px; }
   .quick-nav { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
   .nav-btn { padding: 8px; font-size: .94rem; }
   h1 { font-size: 2.05rem; }
-  .slider-row, .meter-block div { grid-template-columns: 1fr; gap: 4px; }
+  .slider-row, .select-row, .meter-block div { grid-template-columns: 1fr; gap: 4px; }
   .map-tools, .quiz-actions, .fact-tabs { grid-template-columns: 1fr; }
 }

@@ -102,6 +102,44 @@ const mapLabels = {
   rainband: "降雨區"
 };
 
+const typhoonRoutes = {
+  "graze-north": {
+    label: "擦邊北轉",
+    points: [{ x: 690, y: 430 }, { x: 552, y: 332 }, { x: 426, y: 246 }, { x: 548, y: 176 }, { x: 690, y: 118 }],
+    d: "M690 430 C610 366 520 306 426 246 C500 198 604 156 690 118",
+    hint: "颱風中心沿臺灣東側擦邊北上，再往右上方離開；東半部、北部和海面風浪要特別留意。",
+    hazard: 8
+  },
+  "cross-island": {
+    label: "穿越臺灣",
+    points: [{ x: 704, y: 438 }, { x: 552, y: 370 }, { x: 410, y: 294 }, { x: 288, y: 222 }, { x: 164, y: 142 }],
+    d: "M704 438 C594 390 498 334 410 294 C326 254 250 196 164 142",
+    hint: "颱風中心由右下往左上穿越臺灣，山區豪雨、強風、停電和淹水風險都會升高。",
+    hazard: 22
+  },
+  "south-graze": {
+    label: "南側掠過",
+    points: [{ x: 704, y: 438 }, { x: 560, y: 414 }, { x: 420, y: 392 }, { x: 282, y: 406 }, { x: 132, y: 420 }],
+    d: "M704 438 C588 420 502 402 420 392 C330 388 232 410 132 420",
+    hint: "颱風由右下往左下移動，外圍環流底部輕碰臺灣；南部、東南部與海邊長浪仍不可輕忽。",
+    hazard: 10
+  },
+  "west-track": {
+    label: "西側北上",
+    points: [{ x: 652, y: 462 }, { x: 492, y: 410 }, { x: 318, y: 336 }, { x: 254, y: 220 }, { x: 240, y: 108 }],
+    d: "M652 462 C526 430 398 384 318 336 C254 290 238 194 240 108",
+    hint: "颱風從臺灣西南側北上，西半部與山區迎風面可能出現強降雨，沿海也要防強風。",
+    hazard: 16
+  },
+  "east-offshore": {
+    label: "東側外海",
+    points: [{ x: 728, y: 426 }, { x: 650, y: 350 }, { x: 560, y: 288 }, { x: 560, y: 196 }, { x: 624, y: 104 }],
+    d: "M728 426 C658 360 588 328 560 288 C534 238 568 164 624 104",
+    hint: "颱風中心在東側外海北上，未必登陸，但外圍雨帶、長浪和東半部強風仍可能明顯。",
+    hazard: 5
+  }
+};
+
 let selectedMapTarget = "high";
 const foundTargets = new Set();
 
@@ -126,31 +164,60 @@ function addFound(target) {
   updateMapPrompt();
 }
 
+function pointOnRoute(points, progress) {
+  const segmentCount = points.length - 1;
+  const scaled = clamp(progress, 0, 1) * segmentCount;
+  const index = Math.min(Math.floor(scaled), segmentCount - 1);
+  const local = scaled - index;
+  const start = points[index];
+  const end = points[index + 1];
+  return {
+    x: start.x + (end.x - start.x) * local,
+    y: start.y + (end.y - start.y) * local
+  };
+}
+
 function updateTyphoon() {
+  const routeKey = document.querySelector("#routeInput").value;
+  const route = typhoonRoutes[routeKey] || typhoonRoutes["graze-north"];
   const distance = Number(document.querySelector("#distanceInput").value);
   const strength = Number(document.querySelector("#strengthInput").value);
   document.querySelector("#distanceOutput").value = distance;
   document.querySelector("#strengthOutput").value = strength;
 
-  const x = 112 + distance * 5.52;
-  const y = 420 - distance * 2.66;
+  const point = pointOnRoute(route.points, distance / 100);
+  const x = point.x;
+  const y = point.y;
   const scale = 0.68 + strength / 160;
-  const risk = Math.round(distance * 0.46 + strength * 0.54);
+  const taiwanCenter = { x: 398, y: 304 };
+  const centerDistance = Math.hypot(x - taiwanCenter.x, y - taiwanCenter.y);
+  const proximity = clamp(100 - centerDistance / 3.05, 0, 100);
+  const progressRisk = distance > 88 ? -6 : 0;
+  const risk = clamp(Math.round(strength * 0.5 + proximity * 0.38 + route.hazard + progressRisk), 0, 100);
+  document.querySelector("#stormTrack").setAttribute("d", route.d);
+  document.querySelector("#routePoints").replaceChildren(...route.points.map((routePoint) => {
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("cx", routePoint.x);
+    dot.setAttribute("cy", routePoint.y);
+    dot.setAttribute("r", "8");
+    return dot;
+  }));
   document.querySelector("#stormGraphic").setAttribute("transform", `translate(${x} ${y}) scale(${scale})`);
   rootStyle.setProperty("--stormBandOpacity", 0.35 + strength / 120);
-  rootStyle.setProperty("--surgeOpacity", clamp((strength + distance - 70) / 100, 0.1, 0.82));
+  rootStyle.setProperty("--surgeOpacity", clamp((strength + proximity - 70) / 100, 0.1, 0.82));
   rootStyle.setProperty("--floodRisk", clamp((risk - 30) / 70, 0.12, 0.9));
-  rootStyle.setProperty("--mountainRisk", clamp((strength + distance - 55) / 95, 0.1, 0.88));
+  rootStyle.setProperty("--mountainRisk", clamp((strength + proximity - 55) / 95, 0.1, 0.88));
   rootStyle.setProperty("--warningOpacity", clamp((risk - 25) / 75, 0.25, 1));
+  document.querySelector("#routeHint").textContent = `${route.label}：${route.hint}`;
 
   let level = "低";
   let text = "目前直接影響較小，但仍應持續注意氣象資訊與海面長浪提醒。";
   if (risk >= 75) {
     level = "高";
-    text = "強風、豪雨、長浪與淹水風險高。應避免外出，遠離海邊、河川、山區與地下道。";
+    text = `${route.label}情境下強風、豪雨、長浪與淹水風險高。應避免外出，遠離海邊、河川、山區與地下道。`;
   } else if (risk >= 45) {
     level = "中等";
-    text = "可能有明顯陣風與降雨。請固定戶外物品，準備照明、飲水與行動電源。";
+    text = `${route.label}情境下可能有明顯陣風與降雨。請固定戶外物品，準備照明、飲水與行動電源。`;
   }
   document.querySelector("#riskLevel").textContent = level;
   document.querySelector("#riskText").textContent = text;
@@ -236,6 +303,7 @@ document.querySelectorAll(".answer-zone").forEach((zone) => {
 
 document.querySelector("#resetMap").addEventListener("click", resetMap);
 
+document.querySelector("#routeInput").addEventListener("change", updateTyphoon);
 document.querySelector("#distanceInput").addEventListener("input", updateTyphoon);
 document.querySelector("#strengthInput").addEventListener("input", updateTyphoon);
 document.querySelectorAll("#actionGrid button").forEach((button) => {
