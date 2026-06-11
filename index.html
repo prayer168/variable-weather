@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>多變的天氣：水、天氣圖與颱風防災</title>
+  <meta name="description" content="互動數位教材：用動畫理解水與天氣、日夜變化、天氣圖判讀、颱風與防災。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#water" aria-label="回到教材起點">
+      <span class="brand-mark" aria-hidden="true">天</span>
+      <span>
+        <strong>多變的天氣</strong>
+        <small>水與天氣、天氣圖、颱風防災</small>
+      </span>
+    </a>
+    <nav class="quick-nav" aria-label="教材活動">
+      <button class="nav-btn active" type="button" data-view="water">水與天氣</button>
+      <button class="nav-btn" type="button" data-view="map">天氣圖</button>
+      <button class="nav-btn" type="button" data-view="typhoon">颱風防災</button>
+      <button class="nav-btn" type="button" data-view="facts">天氣小常識</button>
+      <button class="nav-btn" type="button" data-view="check">學習檢核</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="view active" id="water" aria-labelledby="water-title">
+      <div class="section-head">
+        <p class="eyebrow">活動一</p>
+        <h1 id="water-title">水在白天與夜間，怎樣影響天氣？</h1>
+        <p>調整時間、陽光、濕度與高空冷卻。觀察蒸發、凝結、雲量、降雨與夜間露水如何一起改變。</p>
+      </div>
+
+      <div class="lab-grid">
+        <div class="sim-stage" aria-label="水循環與日夜天氣動畫">
+          <svg class="weather-svg" viewBox="0 0 860 520" role="img" aria-labelledby="cycle-title cycle-desc">
+            <title id="cycle-title">水循環與日夜天氣示意圖</title>
+            <desc id="cycle-desc">太陽、月亮、海面蒸發、雲的形成、降雨、露水與地形雨會依控制項改變。</desc>
+            <defs>
+              <linearGradient id="skyGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop class="sky-top" offset="0%" stop-color="#9fd2ee"/>
+                <stop class="sky-mid" offset="58%" stop-color="#e2f2f8"/>
+                <stop class="sky-low" offset="100%" stop-color="#f8edc8"/>
+              </linearGradient>
+              <linearGradient id="seaGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#4ca4c4"/>
+                <stop offset="100%" stop-color="#17657f"/>
+              </linearGradient>
+              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#244b5a" flood-opacity=".24"/>
+              </filter>
+            </defs>
+
+            <rect width="860" height="520" fill="url(#skyGradient)"/>
+            <rect id="nightOverlay" class="night-overlay" width="860" height="520"/>
+            <g id="starsGraphic" class="stars">
+              <circle cx="88" cy="64" r="2.4"/><circle cx="176" cy="112" r="1.8"/>
+              <circle cx="288" cy="56" r="2.2"/><circle cx="604" cy="92" r="2.4"/>
+              <circle cx="724" cy="52" r="2"/><circle cx="792" cy="138" r="1.8"/>
+            </g>
+
+            <g class="sun" id="sunGraphic">
+              <circle cx="118" cy="96" r="42"/>
+              <g class="sun-rays">
+                <line x1="118" y1="26" x2="118" y2="2"/>
+                <line x1="118" y1="190" x2="118" y2="160"/>
+                <line x1="48" y1="96" x2="18" y2="96"/>
+                <line x1="212" y1="96" x2="182" y2="96"/>
+                <line x1="68" y1="46" x2="48" y2="26"/>
+                <line x1="168" y1="146" x2="188" y2="166"/>
+                <line x1="168" y1="46" x2="188" y2="26"/>
+                <line x1="68" y1="146" x2="48" y2="166"/>
+              </g>
+            </g>
+
+            <g class="moon" id="moonGraphic">
+              <circle cx="710" cy="86" r="36"/>
+              <circle cx="724" cy="76" r="35"/>
+            </g>
+
+            <path class="mountain back" d="M464 370 L598 178 L744 370 Z"/>
+            <path class="mountain front" d="M540 378 L666 236 L848 378 Z"/>
+            <rect class="land" x="0" y="370" width="860" height="150"/>
+            <path class="sea" d="M0 386 C76 360 144 402 220 382 C302 360 364 402 452 378 C524 360 594 390 668 372 C742 354 796 374 860 360 L860 520 L0 520 Z"/>
+            <path class="sea-shine" d="M48 430 C138 410 200 446 286 424 C376 402 446 438 538 414"/>
+
+            <g class="thermal" id="thermalGraphic" aria-label="受熱空氣上升">
+              <path d="M120 372 C110 314 150 278 138 222"/>
+              <path d="M214 378 C196 314 250 282 232 214"/>
+              <path d="M316 374 C292 312 356 282 336 224"/>
+            </g>
+            <g class="vapor" id="vaporGraphic" aria-label="水蒸氣上升">
+              <path d="M170 380 C132 326 204 286 166 230"/>
+              <path d="M268 386 C226 326 296 284 254 218"/>
+              <path d="M364 382 C322 326 392 286 350 226"/>
+            </g>
+            <g class="cloud" id="cloudGraphic" filter="url(#softShadow)">
+              <ellipse cx="480" cy="138" rx="82" ry="40"/>
+              <ellipse cx="416" cy="154" rx="62" ry="34"/>
+              <ellipse cx="548" cy="154" rx="72" ry="36"/>
+              <rect x="396" y="142" width="178" height="58" rx="29"/>
+              <circle class="cloud-core" cx="504" cy="162" r="18"/>
+              <circle class="cloud-core" cx="456" cy="164" r="12"/>
+            </g>
+            <g class="condensation" id="condensationGraphic" aria-label="凝結小水滴">
+              <circle cx="452" cy="138" r="4"/><circle cx="482" cy="124" r="3"/>
+              <circle cx="526" cy="142" r="4"/><circle cx="432" cy="172" r="3"/>
+              <circle cx="560" cy="174" r="3"/>
+            </g>
+            <g class="rain" id="rainGraphic" aria-label="降雨">
+              <line x1="416" y1="214" x2="394" y2="286"/>
+              <line x1="464" y1="216" x2="442" y2="296"/>
+              <line x1="516" y1="214" x2="494" y2="286"/>
+              <line x1="568" y1="220" x2="546" y2="304"/>
+              <line x1="612" y1="232" x2="590" y2="314"/>
+            </g>
+            <g class="orographic-rain" id="orographicRainGraphic">
+              <line x1="662" y1="274" x2="646" y2="326"/>
+              <line x1="708" y1="284" x2="692" y2="338"/>
+              <line x1="748" y1="296" x2="732" y2="352"/>
+            </g>
+            <g class="dew" id="dewGraphic" aria-label="夜間露水">
+              <ellipse cx="126" cy="397" rx="7" ry="10"/>
+              <ellipse cx="184" cy="404" rx="6" ry="9"/>
+              <ellipse cx="252" cy="396" rx="7" ry="10"/>
+              <ellipse cx="318" cy="408" rx="6" ry="9"/>
+            </g>
+            <g class="wind-lines" id="windGraphic" aria-label="氣流移動">
+              <path d="M76 242 C158 210 218 260 302 226"/>
+              <path d="M82 292 C190 256 282 310 392 268"/>
+              <path d="M612 226 C664 206 718 214 778 188"/>
+            </g>
+            <text class="map-label" x="78" y="182">日照加熱</text>
+            <text class="map-label" x="160" y="452">水面蒸發</text>
+            <text class="map-label" x="414" y="104">冷卻凝結</text>
+            <text class="map-label" x="628" y="430">地形抬升</text>
+          </svg>
+        </div>
+
+        <aside class="control-panel" aria-label="水循環控制台">
+          <label class="slider-row">
+            <span>時間情境</span>
+            <input id="timeInput" type="range" min="0" max="100" value="35">
+            <output id="timeOutput">白天</output>
+          </label>
+          <label class="slider-row">
+            <span>太陽照射</span>
+            <input id="sunInput" type="range" min="0" max="100" value="70">
+            <output id="sunOutput">70</output>
+          </label>
+          <label class="slider-row">
+            <span>空氣濕度</span>
+            <input id="humidityInput" type="range" min="0" max="100" value="65">
+            <output id="humidityOutput">65</output>
+          </label>
+          <label class="slider-row">
+            <span>高空冷卻</span>
+            <input id="coolInput" type="range" min="0" max="100" value="55">
+            <output id="coolOutput">55</output>
+          </label>
+          <div class="meter-block">
+            <div><span>蒸發量</span><meter id="evapMeter" min="0" max="100" value="0"></meter></div>
+            <div><span>成雲機會</span><meter id="cloudMeter" min="0" max="100" value="0"></meter></div>
+            <div><span>降雨可能</span><meter id="rainMeter" min="0" max="100" value="0"></meter></div>
+            <div><span>露水機會</span><meter id="dewMeter" min="0" max="100" value="0"></meter></div>
+          </div>
+          <div class="feedback" id="waterFeedback" aria-live="polite"></div>
+          <button class="ghost-btn" type="button" id="resetWater">重設觀察條件</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="map" aria-labelledby="map-title">
+      <div class="section-head">
+        <p class="eyebrow">活動二</p>
+        <h1 id="map-title">天氣圖不只看符號，也要看移動方向</h1>
+        <p>點選高氣壓、低氣壓、鋒面與降雨區。動畫會顯示空氣環流、鋒面推進和降雨帶的移動。</p>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-tools" role="group" aria-label="天氣符號選擇">
+          <button class="tool active" type="button" data-target="high">高氣壓</button>
+          <button class="tool" type="button" data-target="low">低氣壓</button>
+          <button class="tool" type="button" data-target="front">冷鋒</button>
+          <button class="tool" type="button" data-target="rainband">降雨區</button>
+        </div>
+        <div class="weather-map-wrap">
+          <svg class="weather-map" viewBox="0 0 860 540" role="img" aria-labelledby="map-svg-title map-svg-desc">
+            <title id="map-svg-title">簡化天氣圖</title>
+            <desc id="map-svg-desc">高氣壓、低氣壓、冷鋒、降雨區、等壓線和氣流箭頭。</desc>
+            <rect width="860" height="540" fill="#e8f3f5"/>
+            <g class="grid-lines">
+              <path d="M80 70 H800 M80 170 H800 M80 270 H800 M80 370 H800 M80 470 H800"/>
+              <path d="M120 40 V500 M260 40 V500 M400 40 V500 M540 40 V500 M680 40 V500"/>
+            </g>
+            <path class="island" d="M444 158 C482 198 498 256 482 324 C468 388 424 444 382 450 C356 408 348 348 354 290 C360 228 392 180 444 158 Z"/>
+            <path class="island small" d="M300 238 C316 252 318 278 302 294 C286 284 282 254 300 238 Z"/>
+
+            <g class="isobars high-flow">
+              <ellipse cx="656" cy="184" rx="128" ry="92"/>
+              <ellipse cx="656" cy="184" rx="88" ry="62"/>
+              <path class="flow-arrow" d="M576 132 C632 88 728 110 766 170"/>
+              <path class="flow-arrow" d="M730 242 C666 286 574 250 544 188"/>
+            </g>
+            <g class="isobars low-flow">
+              <ellipse cx="184" cy="190" rx="134" ry="96"/>
+              <ellipse cx="184" cy="190" rx="92" ry="66"/>
+              <path class="flow-arrow low-arrow" d="M112 246 C62 184 102 100 176 88"/>
+              <path class="flow-arrow low-arrow" d="M248 110 C318 160 298 246 220 286"/>
+            </g>
+
+            <path class="front-line answer-zone" data-answer="front" d="M92 326 C186 268 276 278 364 322 C456 370 562 354 660 296"/>
+            <g class="front-symbols">
+              <polygon points="158,286 174,314 138,308"/>
+              <polygon points="252,292 268,320 232,314"/>
+              <polygon points="346,322 362,350 326,344"/>
+              <polygon points="528,350 544,378 508,372"/>
+              <polygon points="620,308 636,336 600,330"/>
+            </g>
+            <ellipse class="rain-zone answer-zone" data-answer="rainband" cx="292" cy="344" rx="126" ry="76"/>
+            <g class="rain-dots">
+              <circle cx="232" cy="320" r="5"/><circle cx="286" cy="300" r="5"/>
+              <circle cx="334" cy="354" r="5"/><circle cx="260" cy="382" r="5"/>
+              <circle cx="368" cy="326" r="5"/><circle cx="210" cy="366" r="4"/>
+            </g>
+            <g class="pressure answer-zone" data-answer="high" transform="translate(656 184)">
+              <circle r="66"/><text text-anchor="middle" y="15">H</text>
+            </g>
+            <g class="pressure low answer-zone" data-answer="low" transform="translate(184 190)">
+              <circle r="66"/><text text-anchor="middle" y="15">L</text>
+            </g>
+            <text class="map-label dark" x="390" y="294">臺灣</text>
+            <text class="map-note" x="614" y="86">高壓：空氣下沉</text>
+            <text class="map-note" x="92" y="86">低壓：空氣上升</text>
+            <text class="map-note" x="246" y="452">鋒面附近易雲雨</text>
+          </svg>
+        </div>
+        <aside class="result-panel">
+          <h2>判讀紀錄</h2>
+          <p id="mapPrompt">目前要找：高氣壓。點選圖上對應位置。</p>
+          <div class="score-line"><span id="mapScore">0</span> / 4 已完成</div>
+          <ul class="found-list" id="foundList"></ul>
+          <button class="ghost-btn" type="button" id="resetMap">重新挑戰</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="typhoon" aria-labelledby="typhoon-title">
+      <div class="section-head">
+        <p class="eyebrow">活動三</p>
+        <h1 id="typhoon-title">颱風靠近時，風雨和災害風險如何變化？</h1>
+        <p>調整颱風靠近程度與強度。觀察暴風圈、螺旋雨帶、海浪、淹水與山區風險，再選擇防災行動。</p>
+      </div>
+
+      <div class="typhoon-grid">
+        <div class="storm-stage">
+          <svg class="typhoon-svg" viewBox="0 0 800 540" role="img" aria-labelledby="ty-title ty-desc">
+            <title id="ty-title">颱風路徑與災害風險動畫</title>
+            <desc id="ty-desc">颱風沿路徑靠近臺灣，螺旋雨帶、暴風半徑、海浪、淹水與坡地警示會依強度改變。</desc>
+            <rect width="800" height="540" fill="#dff0f4"/>
+            <path class="sea-wave" d="M0 398 C88 360 156 420 246 386 C336 350 412 416 504 384 C608 348 680 388 800 362 L800 540 L0 540 Z"/>
+            <path class="coast-surge" id="surgeGraphic" d="M0 430 C112 394 206 448 314 418 C420 390 506 446 620 412 C698 388 748 398 800 382 L800 540 L0 540 Z"/>
+            <path class="taiwan-shape" d="M410 134 C456 184 474 260 450 338 C428 406 382 456 338 454 C312 400 304 334 316 268 C326 202 356 154 410 134 Z"/>
+            <path class="mountain-risk" id="mountainRisk" d="M386 196 L430 326 L340 326 Z"/>
+            <rect class="flood-risk" id="floodRisk" x="334" y="356" width="96" height="44" rx="12"/>
+            <path class="track" d="M112 420 C216 344 296 324 374 304 C470 280 548 232 664 154"/>
+            <g id="stormGraphic" class="storm" transform="translate(374 304)">
+              <circle class="storm-band band-4" r="164"/>
+              <circle class="storm-band band-3" r="126"/>
+              <circle class="storm-band band-2" r="84"/>
+              <circle class="storm-band band-1" r="48"/>
+              <g class="spiral-rain">
+                <path d="M0 -118 C78 -96 114 -26 78 42 C40 112 -54 128 -104 64"/>
+                <path d="M0 -78 C46 -62 72 -18 50 28 C28 76 -34 84 -68 42"/>
+                <path d="M0 -154 C118 -126 170 -22 126 82 C82 182 -72 196 -148 92"/>
+              </g>
+              <path class="core" d="M0 -52 C54 -38 70 14 30 42 C-14 72 -74 46 -66 0 C-58 -46 -14 -42 0 -52 Z"/>
+              <circle class="eye" r="16"/>
+            </g>
+            <g class="warning-icons">
+              <text x="330" y="382">淹水</text>
+              <text x="354" y="336">坡地</text>
+              <text x="584" y="438">長浪</text>
+            </g>
+            <text class="map-label dark" x="374" y="304">臺灣</text>
+          </svg>
+        </div>
+        <aside class="control-panel">
+          <label class="slider-row">
+            <span>颱風靠近程度</span>
+            <input id="distanceInput" type="range" min="0" max="100" value="55">
+            <output id="distanceOutput">55</output>
+          </label>
+          <label class="slider-row">
+            <span>颱風強度</span>
+            <input id="strengthInput" type="range" min="0" max="100" value="70">
+            <output id="strengthOutput">70</output>
+          </label>
+          <div class="risk-card" id="riskCard">
+            <span>目前風險</span>
+            <strong id="riskLevel">中等</strong>
+            <p id="riskText">可能有明顯陣風與降雨，需要注意最新警報。</p>
+          </div>
+          <div class="action-grid" id="actionGrid" aria-label="防災行動選擇">
+            <button type="button" data-safe="true">固定招牌、盆栽與門窗</button>
+            <button type="button" data-safe="true">準備飲水、手電筒與行動電源</button>
+            <button type="button" data-safe="false">到海邊看浪</button>
+            <button type="button" data-safe="false">穿越淹水地下道</button>
+          </div>
+          <div class="feedback" id="typhoonFeedback" aria-live="polite">請選擇一項防災行動。</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="facts" aria-labelledby="facts-title">
+      <div class="section-head">
+        <p class="eyebrow">活動四</p>
+        <h1 id="facts-title">天氣小常識：故事、觀察與生活應用</h1>
+        <p>用六個短篇小故事，認識雲、午後雷陣雨、海陸風、都市熱島、觀雲看天與生活中的氣象應用。</p>
+      </div>
+
+      <div class="facts-layout">
+        <div class="fact-tabs" role="tablist" aria-label="天氣小常識頁籤">
+          <button class="fact-tab active" type="button" role="tab" aria-selected="true" data-fact="cloud-story">雲的名字</button>
+          <button class="fact-tab" type="button" role="tab" aria-selected="false" data-fact="afternoon-rain">午後雷雨</button>
+          <button class="fact-tab" type="button" role="tab" aria-selected="false" data-fact="sea-breeze">海陸風</button>
+          <button class="fact-tab" type="button" role="tab" aria-selected="false" data-fact="heat-island">熱島效應</button>
+          <button class="fact-tab" type="button" role="tab" aria-selected="false" data-fact="cloud-watch">觀雲看天</button>
+          <button class="fact-tab" type="button" role="tab" aria-selected="false" data-fact="daily-weather">生活氣象</button>
+        </div>
+
+        <article class="fact-panel active" id="cloud-story" role="tabpanel">
+          <div class="fact-visual">
+            <svg class="fact-svg" viewBox="0 0 560 340" role="img" aria-labelledby="cloud-story-title">
+              <title id="cloud-story-title">不同高度的雲</title>
+              <rect width="560" height="340" fill="#dff1f7"/>
+              <g class="altitude-guides">
+                <line x1="34" y1="76" x2="526" y2="76"/><line x1="34" y1="166" x2="526" y2="166"/><line x1="34" y1="246" x2="526" y2="246"/>
+                <text x="38" y="66">高空冷</text><text x="38" y="156">中層</text><text x="38" y="236">近地面</text>
+              </g>
+              <path class="fact-horizon" d="M0 278 C92 248 160 292 252 266 C350 238 430 278 560 244 L560 340 L0 340 Z"/>
+              <g class="high-clouds"><path d="M66 72 C120 54 178 64 236 44"/><path d="M296 78 C352 52 418 72 500 48"/></g>
+              <g class="mid-cloud"><ellipse cx="182" cy="154" rx="60" ry="28"/><ellipse cx="236" cy="148" rx="70" ry="34"/><ellipse cx="292" cy="160" rx="56" ry="28"/><rect x="158" y="154" width="164" height="36" rx="18"/></g>
+              <g class="tower-cloud"><ellipse cx="414" cy="184" rx="58" ry="34"/><ellipse cx="384" cy="142" rx="46" ry="34"/><ellipse cx="426" cy="118" rx="50" ry="40"/><ellipse cx="462" cy="154" rx="44" ry="34"/><rect x="362" y="176" width="128" height="54" rx="24"/></g>
+              <g class="tower-rain"><line x1="392" y1="238" x2="378" y2="276"/><line x1="438" y1="236" x2="424" y2="282"/><line x1="482" y1="238" x2="468" y2="274"/></g>
+              <text x="68" y="114">高雲</text><text x="174" y="222">中低雲</text><text x="376" y="254">積雨雲</text>
+            </svg>
+          </div>
+          <div class="fact-copy">
+            <h2>雲也有自己的名字</h2>
+            <p>很久以前，航海的人會靠雲判斷天氣。薄薄像羽毛的高雲常出現在高空；一團一團的積雲像棉花；如果雲越長越高，變成高大的積雨雲，就可能帶來雷陣雨。</p>
+            <p>觀察雲不是背名字而已，而是在練習看「高度、厚薄、形狀和變化」。雲變厚、變暗、往上發展時，通常代表空氣正在上升，水蒸氣也正在凝結。</p>
+          </div>
+        </article>
+
+        <article class="fact-panel" id="afternoon-rain" role="tabpanel">
+          <div class="fact-visual">
+            <svg class="fact-svg" viewBox="0 0 560 340" role="img" aria-labelledby="rain-story-title">
+              <title id="rain-story-title">午後雷陣雨形成</title>
+              <rect width="560" height="340" fill="#e7f5fb"/>
+              <circle class="mini-sun" cx="82" cy="72" r="34"/>
+              <rect class="cold-layer" x="0" y="88" width="560" height="44"/>
+              <path class="fact-ground hot" d="M0 270 C96 246 166 288 260 260 C360 232 442 272 560 244 L560 340 L0 340 Z"/>
+              <g class="heat-plumes"><path d="M150 252 C116 206 176 176 142 126"/><path d="M244 260 C204 204 278 174 238 112"/><path d="M338 250 C304 204 360 174 330 124"/></g>
+              <g class="storm-cloud-small"><ellipse cx="286" cy="112" rx="72" ry="34"/><ellipse cx="228" cy="130" rx="54" ry="30"/><ellipse cx="350" cy="132" rx="62" ry="32"/><rect x="212" y="128" width="160" height="48" rx="24"/></g>
+              <g class="mini-rain"><line x1="234" y1="196" x2="214" y2="256"/><line x1="292" y1="196" x2="272" y2="268"/><line x1="352" y1="198" x2="332" y2="260"/></g>
+              <path class="lightning" d="M314 178 L284 226 L314 220 L292 274"/>
+              <ellipse class="puddle" cx="286" cy="286" rx="76" ry="16"/>
+              <text x="380" y="108">高空冷卻</text><text x="112" y="236">地表加熱</text>
+            </svg>
+          </div>
+          <div class="fact-copy">
+            <h2>為什麼午後常突然下大雨？</h2>
+            <p>夏天白天地表被太陽加熱，近地面的空氣變暖、變輕而上升。上升到高空後變冷，水蒸氣凝結成雲；如果上升很旺盛，雲會長得又高又厚，形成積雨雲。</p>
+            <p>午後雷陣雨常來得快、雨勢強，但範圍不一定很大。看到天空快速變暗、聽到雷聲時，要趕快離開空曠場地、樹下和水邊。</p>
+          </div>
+        </article>
+
+        <article class="fact-panel" id="sea-breeze" role="tabpanel">
+          <div class="fact-visual">
+            <svg class="fact-svg" viewBox="0 0 560 340" role="img" aria-labelledby="breeze-title">
+              <title id="breeze-title">海風與陸風</title>
+              <rect width="560" height="340" fill="#dff1f7"/>
+              <g class="breeze-clock"><circle cx="486" cy="72" r="34"/><path d="M486 50 V72 L506 84"/></g>
+              <rect class="sea-block" x="0" y="226" width="280" height="114"/><rect class="land-block" x="280" y="226" width="280" height="114"/>
+              <circle class="mini-sun" cx="94" cy="72" r="30"/>
+              <g class="warm-air-bubble"><ellipse cx="388" cy="188" rx="54" ry="28"/><path d="M388 188 C372 154 398 132 382 102"/></g>
+              <g class="breeze-arrow day-arrow"><path d="M124 238 C194 200 270 204 344 232"/><polygon points="344,232 316,218 322,248"/></g>
+              <g class="breeze-arrow return-arrow"><path d="M420 118 C330 86 226 92 150 132"/><polygon points="150,132 178,136 164,110"/></g>
+              <text x="82" y="286">海面較涼</text><text x="334" y="286">陸地較熱</text><text x="202" y="198">白天海風往陸地吹</text>
+            </svg>
+          </div>
+          <div class="fact-copy">
+            <h2>海邊為什麼常有風？</h2>
+            <p>白天陸地升溫比海水快，陸地上方空氣受熱上升，海面較涼的空氣就往陸地補進來，形成海風。夜晚陸地降溫也比較快，風向可能變成由陸地吹向海面。</p>
+            <p>這就是為什麼海邊活動時，即使天氣晴朗，也常感覺有風。漁業、帆船活動和海岸氣象預報都會留意海陸風。</p>
+          </div>
+        </article>
+
+        <article class="fact-panel" id="heat-island" role="tabpanel">
+          <div class="fact-visual">
+            <svg class="fact-svg" viewBox="0 0 560 340" role="img" aria-labelledby="heat-title">
+              <title id="heat-title">都市熱島效應</title>
+              <rect width="560" height="340" fill="#f3efe3"/>
+              <rect class="park" x="28" y="244" width="148" height="70" rx="8"/>
+              <rect class="building b1" x="230" y="154" width="58" height="160"/><rect class="building b2" x="304" y="108" width="70" height="206"/><rect class="building b3" x="394" y="178" width="58" height="136"/>
+              <g class="window-grid"><path d="M246 176 H272 M246 206 H272 M246 236 H272 M324 134 H354 M324 166 H354 M324 198 H354 M410 202 H438 M410 232 H438"/></g>
+              <g class="heat-dome"><path d="M192 236 C250 104 396 76 486 220"/><path d="M220 244 C278 142 380 128 454 232"/></g>
+              <g class="tree"><rect x="88" y="232" width="12" height="42"/><circle cx="94" cy="222" r="28"/></g>
+              <g class="thermometer city"><rect x="492" y="112" width="18" height="116" rx="9"/><circle cx="501" cy="242" r="20"/><line x1="501" y1="220" x2="501" y2="140"/></g>
+              <g class="thermometer park-temp"><rect x="154" y="138" width="14" height="88" rx="7"/><circle cx="161" cy="236" r="16"/><line x1="161" y1="220" x2="161" y2="174"/></g>
+              <text x="54" y="304">公園較涼</text><text x="252" y="82">都市蓄熱</text>
+            </svg>
+          </div>
+          <div class="fact-copy">
+            <h2>城市為什麼常比郊區熱？</h2>
+            <p>柏油路、水泥建築會吸收並儲存熱量，車輛和冷氣也會排出熱。當城市缺少樹蔭和透水地面時，夜晚散熱變慢，就容易形成都市熱島。</p>
+            <p>增加樹木、綠屋頂、透水鋪面和遮陽設計，可以讓城市降溫。這是氣象知識在都市規劃中的重要應用。</p>
+          </div>
+        </article>
+
+        <article class="fact-panel" id="cloud-watch" role="tabpanel">
+          <div class="fact-visual">
+            <svg class="fact-svg" viewBox="0 0 560 340" role="img" aria-labelledby="watch-title">
+              <title id="watch-title">觀雲看天</title>
+              <rect width="560" height="340" fill="#e1f2fb"/>
+              <path class="fact-horizon" d="M0 264 C104 234 190 276 292 250 C396 222 468 262 560 236 L560 340 L0 340 Z"/>
+              <g class="watch-cloud left"><ellipse cx="116" cy="146" rx="48" ry="25"/><ellipse cx="160" cy="140" rx="58" ry="30"/><rect x="96" y="146" width="106" height="34" rx="17"/></g>
+              <g class="watch-cloud dark"><ellipse cx="368" cy="118" rx="70" ry="36"/><ellipse cx="428" cy="130" rx="66" ry="34"/><rect x="332" y="130" width="140" height="46" rx="22"/></g>
+              <g class="wind-gust"><path d="M72 86 C132 62 178 92 232 70"/><path d="M60 110 C124 88 184 122 242 100"/></g>
+              <g class="watch-rain"><line x1="354" y1="196" x2="338" y2="246"/><line x1="412" y1="198" x2="396" y2="254"/><line x1="466" y1="196" x2="450" y2="244"/></g>
+              <g class="umbrella"><path d="M96 260 Q146 210 196 260 Z"/><line x1="146" y1="260" x2="146" y2="304"/><path d="M146 304 Q164 314 176 296"/></g>
+              <text x="70" y="216">白亮、分散</text><text x="324" y="282">變厚、變暗</text>
+            </svg>
+          </div>
+          <div class="fact-copy">
+            <h2>出門前，先抬頭看一眼天空</h2>
+            <p>雲如果白白的、分散、底部不厚，通常天氣較穩定。若雲快速堆高、底部變暗，或遠方雲牆靠近，就可能代表水氣和上升氣流正在增強。</p>
+            <p>觀雲不能取代正式預報，但可以幫助我們做生活判斷：要不要帶傘、戶外活動是否要提早結束、是否該留意雷聲和強風。</p>
+          </div>
+        </article>
+
+        <article class="fact-panel" id="daily-weather" role="tabpanel">
+          <div class="fact-visual">
+            <svg class="fact-svg" viewBox="0 0 560 340" role="img" aria-labelledby="daily-title">
+              <title id="daily-title">生活中的氣象應用</title>
+              <rect width="560" height="340" fill="#edf5f2"/>
+              <g class="phone"><rect x="210" y="48" width="140" height="238" rx="24"/><rect x="228" y="82" width="104" height="154" rx="12"/><circle cx="280" cy="258" r="10"/></g>
+              <g class="app-weather"><circle cx="266" cy="128" r="22"/><path d="M238 178 C252 158 290 158 306 178 C324 178 334 190 334 204 C334 222 318 230 296 230 H248 C226 230 214 218 214 202 C214 188 224 178 238 178 Z"/><line x1="248" y1="248" x2="238" y2="282"/><line x1="282" y1="248" x2="272" y2="282"/><line x1="316" y1="248" x2="306" y2="282"/></g>
+              <g class="radar-screen"><circle cx="116" cy="142" r="70"/><circle cx="116" cy="142" r="42"/><path d="M116 142 L176 108 A70 70 0 0 1 186 164 Z"/></g>
+              <g class="alert-badge"><polygon points="414,108 448,166 380,166"/><text x="405" y="156">!</text></g>
+              <g class="signal-rings"><path d="M364 104 C404 134 404 198 364 228"/><path d="M390 72 C452 122 452 212 390 262"/></g>
+              <text x="176" y="318">預報、雷達、警報提醒生活決策</text>
+            </svg>
+          </div>
+          <div class="fact-copy">
+            <h2>氣象資料藏在每天的選擇裡</h2>
+            <p>氣象不只是在新聞裡。農夫看降雨安排灌溉，機場看風向安排起降，運動會看雷雨預報調整賽程，家庭也會根據溫度和空氣品質決定活動。</p>
+            <p>使用氣象資訊時，可以同時看「預報、雷達回波、警報、所在地」。只看一個圖示容易誤判，搭配多種線索會更可靠。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="check" aria-labelledby="check-title">
+      <div class="section-head">
+        <p class="eyebrow">活動五</p>
+        <h1 id="check-title">學習檢核：我能解釋天氣變化</h1>
+        <p>完成三題後，系統會給出回饋。老師可讓學生先個別作答，再全班討論理由。</p>
+      </div>
+
+      <form class="quiz" id="quizForm">
+        <fieldset>
+          <legend>1. 晴朗炎熱的白天，水面發生什麼變化最明顯？</legend>
+          <label><input type="radio" name="q1" value="a"> 蒸發增加，空氣中的水蒸氣可能變多</label>
+          <label><input type="radio" name="q1" value="b"> 水完全不會移動</label>
+          <label><input type="radio" name="q1" value="c"> 雲一定會立刻消失</label>
+        </fieldset>
+        <fieldset>
+          <legend>2. 天氣圖上的低氣壓附近，常見的天氣狀況是？</legend>
+          <label><input type="radio" name="q2" value="a"> 空氣下沉，永遠晴朗</label>
+          <label><input type="radio" name="q2" value="b"> 空氣上升，較容易形成雲雨</label>
+          <label><input type="radio" name="q2" value="c"> 和天氣變化沒有關係</label>
+        </fieldset>
+        <fieldset>
+          <legend>3. 颱風警報發布時，下列哪一項最安全？</legend>
+          <label><input type="radio" name="q3" value="a"> 前往河邊或海邊觀察水位與浪高</label>
+          <label><input type="radio" name="q3" value="b"> 確認防災物資並避免不必要外出</label>
+          <label><input type="radio" name="q3" value="c"> 忽略警報，照常到山區活動</label>
+        </fieldset>
+        <fieldset>
+          <legend>4. 夜間地表變冷時，草葉上出現露水，主要原因是？</legend>
+          <label><input type="radio" name="q4" value="a"> 水蒸氣遇冷凝結在物體表面</label>
+          <label><input type="radio" name="q4" value="b"> 雲直接掉到草葉上</label>
+          <label><input type="radio" name="q4" value="c"> 太陽把水滴照出來</label>
+        </fieldset>
+        <fieldset>
+          <legend>5. 高氣壓中心附近，空氣常見的垂直運動是？</legend>
+          <label><input type="radio" name="q5" value="a"> 空氣快速上升，容易形成劇烈雲雨</label>
+          <label><input type="radio" name="q5" value="b"> 空氣較常下沉，天氣較穩定</label>
+          <label><input type="radio" name="q5" value="c"> 空氣完全靜止不動</label>
+        </fieldset>
+        <fieldset>
+          <legend>6. 冷鋒通過時，較可能出現哪一種變化？</legend>
+          <label><input type="radio" name="q6" value="a"> 氣溫可能下降，雲量或降雨增加</label>
+          <label><input type="radio" name="q6" value="b"> 所有雲都立刻消失</label>
+          <label><input type="radio" name="q6" value="c"> 海水一定停止蒸發</label>
+        </fieldset>
+        <fieldset>
+          <legend>7. 天氣圖上的降雨區和低氣壓、鋒面接近時，代表什麼？</legend>
+          <label><input type="radio" name="q7" value="a"> 附近天氣可能較不穩定，要留意雨勢變化</label>
+          <label><input type="radio" name="q7" value="b"> 一定是晴天，適合曬棉被</label>
+          <label><input type="radio" name="q7" value="c"> 只代表地圖顏色比較深，和天氣無關</label>
+        </fieldset>
+        <fieldset>
+          <legend>8. 颱風的螺旋雨帶靠近時，最需要注意的是？</legend>
+          <label><input type="radio" name="q8" value="a"> 可能出現一陣一陣增強的風雨</label>
+          <label><input type="radio" name="q8" value="b"> 一定完全無風無雨</label>
+          <label><input type="radio" name="q8" value="c"> 只會讓氣溫變得非常寒冷</label>
+        </fieldset>
+        <fieldset>
+          <legend>9. 颱風強度高且靠近時，海邊活動為什麼危險？</legend>
+          <label><input type="radio" name="q9" value="a"> 可能有長浪、強風和暴潮，容易被浪捲走</label>
+          <label><input type="radio" name="q9" value="b"> 海水會全部退光，所以很安全</label>
+          <label><input type="radio" name="q9" value="c"> 只有天空變暗，海邊沒有風險</label>
+        </fieldset>
+        <fieldset>
+          <legend>10. 如果想預測明天是否容易下雨，最需要一起觀察哪些線索？</legend>
+          <label><input type="radio" name="q10" value="a"> 濕度、雲量、低氣壓或鋒面位置</label>
+          <label><input type="radio" name="q10" value="b"> 只看今天午餐吃什麼</label>
+          <label><input type="radio" name="q10" value="c"> 只看地圖上字體大小</label>
+        </fieldset>
+        <div class="quiz-actions">
+          <button class="primary-btn" type="submit">送出檢核</button>
+          <button class="ghost-btn" type="button" id="resetQuiz">清除答案</button>
+        </div>
+      </form>
+      <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
